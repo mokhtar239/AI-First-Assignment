@@ -84,7 +84,39 @@ ratings_of_book_helper(_, []).
 
 
 
+% -----------------------TASK-5-----------------------------
+% Collect all (Student, Score) pairs from all ratings
+collect_all_ratings([], []).
+collect_all_ratings([rating(S, _, Score) | Rest], [(S, Score) | RestPairs]) :-
+    collect_all_ratings(Rest, RestPairs).
 
+% Helper to gather all rating/3 facts into a list
+all_ratings(Ratings) :-
+    collect_all_rating_facts([], Ratings).
+
+collect_all_rating_facts(Seen, Result) :-
+    rating(S, B, Score),
+    \+ member(rating(S, B, Score), Seen), !,
+    collect_all_rating_facts([rating(S, B, Score) | Seen], Result).
+collect_all_rating_facts(Result, Result).
+
+% Find the maximum score in a list of (Student, Score) pairs
+max_score([(_, Score)], Score).
+max_score([(_, Score) | Rest], Max) :-
+    max_score(Rest, RestMax),
+    (Score > RestMax -> Max = Score ; Max = RestMax).
+
+% Find the student who gave the max score
+find_reviewer_with_score([(Student, Score) | _], Score, Student) :- !.
+find_reviewer_with_score([_ | Rest], MaxScore, Student) :-
+    find_reviewer_with_score(Rest, MaxScore, Student).
+
+% Top reviewer: student who gave the highest single rating
+top_reviewer(Student) :-
+    all_ratings(Ratings),
+    collect_all_ratings(Ratings, Pairs),
+    max_score(Pairs, MaxScore),
+    find_reviewer_with_score(Pairs, MaxScore, Student), !.
 
 % -----------------------TASK-6-----------------------------
 collect_topics([], []).
