@@ -2,6 +2,16 @@
 % Load the library data
 :- consult('library_data.pl').
 
+% -----------------------TASK-1-----------------------------
+books_borrowed_by_student(Student, L) :-
+    find_books(_, Student, [], L).
+
+find_books(Book, Student, Acc, L) :-
+    borrowed(Student, Book),
+    \+ member(Book, Acc), !,
+    find_books(_, Student, [Book|Acc], L).
+
+find_books(_, _, Acc, Acc).
 % -----------------------TASK-2-----------------------------
 
 % baseCase -> if no elements size of list is 0
@@ -76,4 +86,34 @@ ratings_of_book_helper(_, []).
 
 
 
+% -----------------------TASK-6-----------------------------
+collect_topics([], []).
+collect_topics([Book|Rest], AllTopics) :-
+    topics(Book, BookTopics),
+    collect_topics(Rest, RestTopics),
+    append(BookTopics, RestTopics, AllTopics).
+
+count(_, [], 0).
+count(X, [X|T], N) :- !,
+    count(X, T, N1),
+    N is N1 + 1.
+count(X, [_|T], N) :-
+    count(X, T, N).
+
+most_frequent([H|T], Most) :-
+    most_frequent_acc([H|T], [H|T], H, 0, Most).
+
+most_frequent_acc([], _, Best, _, Best).
+most_frequent_acc([H|T], FullList, CurrentBest, CurrentMax, Most) :-
+    count(H, FullList, N),
+    N > CurrentMax, !,
+    most_frequent_acc(T, FullList, H, N, Most).
+most_frequent_acc([_|T], FullList, CurrentBest, CurrentMax, Most) :-
+    most_frequent_acc(T, FullList, CurrentBest, CurrentMax, Most).
+
+
+most_common_topic_for_student(Student, Topic) :-
+    books_borrowed_by_student(Student, Books),
+    collect_topics(Books, AllTopics),
+    most_frequent(AllTopics, Topic).
 
