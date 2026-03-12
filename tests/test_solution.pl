@@ -7,7 +7,7 @@ run_tests :-
   % test_task1,
     test_task2,
     test_task3,
-  % test_task4,
+    test_task4,
   % test_task5,
   % test_task6,
     write('=== All Tests Passed ==='), nl.

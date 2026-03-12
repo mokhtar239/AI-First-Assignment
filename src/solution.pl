@@ -62,8 +62,15 @@ no_book_has_more(B, N) :-
     N2 > N, !, fail.
 no_book_has_more(_, _).
 
+% -----------------------TASK-4-----------------------------
+ratings_of_book(Book, List) :-
+    ratings_of_book_helper(Book, List), !.
 
+ratings_of_book_helper(Book, [(Person, Score) | Rest]) :-
+    rating(Person, Book, Score),
+    ratings_of_book_helper(Book, Rest).
 
+ratings_of_book_helper(_, []).
 
 
 
