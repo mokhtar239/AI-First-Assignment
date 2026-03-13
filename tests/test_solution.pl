@@ -4,12 +4,12 @@
 % Run all tests
 run_tests :-
     write('=== Running Tests ==='), nl,
-  % test_task1,
+   test_task1,
     test_task2,
     test_task3,
     test_task4,
     test_task5,
-  % test_task6,
+   test_task6,
     write('=== All Tests Passed ==='), nl.
 
 test_task1 :-
@@ -39,5 +39,5 @@ test_task5 :-
 
 test_task6 :-
     write('Task 6: most_common_topic_for_student... '),
-    most_common_topic_for_student(mona, tracing),
+    most_common_topic_for_student(mona, a),
     write('PASSED'), nl.

@@ -3,8 +3,16 @@
 :- consult('library_data.pl').
 
 % -----------------------TASK-1-----------------------------
+
+rev([], []).
+rev([H|T], R) :-
+    rev(T, RT),
+    append(RT, [H], R).
+
 books_borrowed_by_student(Student, L) :-
-    find_books(_, Student, [], L).
+    find_books(_, Student, [], OL),
+    rev(OL, L).
+
 
 find_books(Book, Student, Acc, L) :-
     borrowed(Student, Book),
